@@ -1,0 +1,823 @@
+/* ===== SISTEMA DE RULETA ===== */
+
+.wheel-panel,
+.result-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(245,245,245,0.98) 100%);
+    border-radius: 24px;
+    box-shadow: 0 14px 50px rgba(0,0,0,0.08);
+    transition: all 0.5s ease;
+    width: 100%;
+    max-width: 760px;
+    margin: 0 auto;
+}
+
+.wheel-panel.hidden {
+    display: none;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.wheel-image {
+    width: 320px;
+    max-width: 100%;
+    height: auto;
+    filter: drop-shadow(0 10px 30px rgba(0,0,0,0.2));
+    transition: transform 0.2s ease, opacity 0.5s ease;
+}
+
+.wheel-image.spinning {
+    filter: drop-shadow(0 18px 50px rgba(0,0,0,0.25));
+}
+
+.wheel-pointer {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    margin-bottom: 0;
+}
+
+.wheel-pointer::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-top: 30px solid #ff6b6b;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+}
+
+.wheel-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    max-width: 400px;
+}
+
+.spin-button {
+    padding: 1.2rem 2rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+}
+
+.spin-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(102, 126, 234, 0.6);
+}
+
+.spin-button:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.spin-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.spin-button.spinning {
+    animation: pulse-button 0.6s ease-in-out infinite;
+}
+
+@keyframes pulse-button {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.result-display {
+    display: none;
+    text-align: center;
+    animation: slideIn 0.5s ease-out;
+    width: 100%;
+}
+
+.result-display.show {
+    display: block;
+}
+
+.result-rarity {
+    font-size: 1.8rem;
+    font-weight: bold;
+    padding: 1.4rem 1.8rem;
+    border-radius: 16px;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.result-rarity::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+    animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%) translateY(-100%) rotate(45deg);
+    }
+    100% {
+        transform: translateX(100%) translateY(100%) rotate(45deg);
+    }
+}
+
+/* COMÚN - Gris plateado */
+.result-rarity.comun {
+    background: linear-gradient(135deg, #e3e5e8 0%, #c5c7cb 50%, #f5f6f8 100%);
+    color: #3b3b3b;
+    box-shadow: 
+        0 12px 35px rgba(120, 120, 120, 0.15),
+        inset 0 1px 2px rgba(255, 255, 255, 0.8),
+        0 0 40px rgba(180, 180, 180, 0.1);
+}
+
+.result-rarity.comun:hover {
+    transform: translateY(-3px);
+    box-shadow: 
+        0 16px 45px rgba(120, 120, 120, 0.2),
+        inset 0 1px 2px rgba(255, 255, 255, 0.9),
+        0 0 50px rgba(180, 180, 180, 0.15);
+}
+
+/* POCO COMÚN - Verde menta pastel */
+.result-rarity.pocoComun {
+    background: linear-gradient(135deg, #d5f2e9 0%, #b8e8d8 50%, #a8e6d9 100%);
+    color: #2d6b5c;
+    box-shadow: 
+        0 12px 35px rgba(100, 180, 150, 0.2),
+        inset 0 1px 2px rgba(255, 255, 255, 0.9),
+        0 0 50px rgba(150, 220, 190, 0.15);
+}
+
+.result-rarity.pocoComun:hover {
+    transform: translateY(-3px);
+    box-shadow: 
+        0 18px 50px rgba(100, 180, 150, 0.3),
+        inset 0 1px 2px rgba(255, 255, 255, 0.95),
+        0 0 60px rgba(150, 220, 190, 0.25);
+}
+
+/* RARA - Azul suave nocturno con lavanda */
+.result-rarity.raro {
+    background: linear-gradient(135deg, #d4e5f7 0%, #b8d0e8 50%, #8ba8d4 100%);
+    color: #fff;
+    box-shadow: 
+        0 14px 40px rgba(100, 140, 190, 0.25),
+        inset 0 1px 2px rgba(255, 255, 255, 0.85),
+        0 0 60px rgba(150, 180, 220, 0.2);
+    filter: drop-shadow(0 0 20px rgba(180, 160, 220, 0.15));
+}
+
+.result-rarity.raro:hover {
+    transform: translateY(-3px);
+    box-shadow: 
+        0 18px 50px rgba(100, 140, 190, 0.35),
+        inset 0 1px 2px rgba(255, 255, 255, 0.9),
+        0 0 70px rgba(150, 180, 220, 0.3);
+}
+
+/* ÉPICA - Violeta rosado */
+.result-rarity.epico {
+    background: linear-gradient(135deg, #ead4f0 0%, #d8b8e8 50%, #c785d8 100%);
+    color: #fff;
+    box-shadow: 
+        0 15px 45px rgba(160, 100, 180, 0.3),
+        inset 0 1px 2px rgba(255, 255, 255, 0.85),
+        0 0 70px rgba(200, 150, 220, 0.2);
+    filter: drop-shadow(0 0 25px rgba(200, 150, 220, 0.2));
+}
+
+.result-rarity.epico:hover {
+    transform: translateY(-3px);
+    box-shadow: 
+        0 20px 60px rgba(160, 100, 180, 0.4),
+        inset 0 1px 2px rgba(255, 255, 255, 0.9),
+        0 0 80px rgba(200, 150, 220, 0.3);
+}
+
+/* LEGENDARIA - Dorado champagne */
+.result-rarity.legendario {
+    background: linear-gradient(135deg, #f5f0e0 0%, #f0e3c8 50%, #e8d5b1 100%);
+    color: #5a4a2e;
+    box-shadow: 
+        0 18px 50px rgba(180, 150, 80, 0.25),
+        inset 0 2px 4px rgba(255, 255, 255, 0.95),
+        0 0 80px rgba(220, 200, 120, 0.2),
+        inset 0 0 40px rgba(220, 200, 120, 0.08);
+}
+
+.result-rarity.legendario:hover {
+    transform: translateY(-4px);
+    box-shadow: 
+        0 24px 70px rgba(180, 150, 80, 0.35),
+        inset 0 2px 4px rgba(255, 255, 255, 0.98),
+        0 0 100px rgba(220, 200, 120, 0.3),
+        inset 0 0 50px rgba(220, 200, 120, 0.12);
+}
+
+/* EXÓTICA - Iridiscente */
+.result-rarity.exotico {
+    background: linear-gradient(135deg, #f0d9ff 0%, #e5b8ff 25%, #d4b8ff 50%, #c0d4ff 75%, #d0e8ff 100%);
+    color: #fff;
+    box-shadow: 
+        0 16px 50px rgba(180, 100, 200, 0.3),
+        inset 0 1px 2px rgba(255, 255, 255, 0.9),
+        0 0 80px rgba(200, 150, 255, 0.2),
+        0 0 40px rgba(150, 180, 255, 0.15);
+    animation: iridescent-shift 4s ease-in-out infinite;
+}
+
+@keyframes iridescent-shift {
+    0%, 100% {
+        filter: drop-shadow(0 0 30px rgba(200, 150, 255, 0.2));
+    }
+    50% {
+        filter: drop-shadow(0 0 40px rgba(150, 180, 255, 0.25));
+    }
+}
+
+.result-rarity.exotico:hover {
+    transform: translateY(-3px);
+    box-shadow: 
+        0 20px 65px rgba(180, 100, 200, 0.4),
+        inset 0 1px 2px rgba(255, 255, 255, 0.95),
+        0 0 100px rgba(200, 150, 255, 0.3),
+        0 0 50px rgba(150, 180, 255, 0.25);
+}
+
+/* MÍTICA - Rojo vino con dorados */
+.result-rarity.mitico {
+    background: linear-gradient(135deg, #f0d4d8 0%, #e8a8b8 30%, #d4537f 60%, #d97a8f 100%);
+    color: #fff;
+    box-shadow: 
+        0 20px 60px rgba(180, 60, 100, 0.4),
+        inset 0 1px 2px rgba(255, 255, 255, 0.8),
+        0 0 100px rgba(220, 100, 150, 0.3),
+        inset 0 0 50px rgba(220, 100, 150, 0.1);
+    animation: mitico-glow 1.8s ease-in-out infinite;
+}
+
+@keyframes mitico-glow {
+    0%, 100% {
+        box-shadow: 
+            0 20px 60px rgba(180, 60, 100, 0.4),
+            inset 0 1px 2px rgba(255, 255, 255, 0.8),
+            0 0 100px rgba(220, 100, 150, 0.3),
+            inset 0 0 50px rgba(220, 100, 150, 0.1);
+    }
+    50% {
+        box-shadow: 
+            0 25px 80px rgba(180, 60, 100, 0.5),
+            inset 0 1px 2px rgba(255, 255, 255, 0.85),
+            0 0 140px rgba(220, 100, 150, 0.45),
+            inset 0 0 60px rgba(220, 100, 150, 0.15);
+    }
+}
+
+@keyframes mitico-glow {
+    0%, 100% {
+        box-shadow: 0 5px 25px rgba(255, 215, 0, 0.6), 0 0 30px rgba(255, 215, 0, 0.3);
+        text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    }
+    50% {
+        box-shadow: 0 5px 35px rgba(255, 215, 0, 0.8), 0 0 50px rgba(255, 215, 0, 0.5);
+        text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+    }
+}
+
+.result-cuppon {
+    font-size: 1.4rem;
+    color: #333;
+    margin: 1.5rem 0;
+    padding: 2rem;
+    border-radius: 18px;
+    font-style: italic;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.04);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    line-height: 1.6;
+}
+
+.result-cuppon::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.3) 0%, transparent 60%);
+    pointer-events: none;
+}
+
+.result-cuppon > * {
+    position: relative;
+    z-index: 2;
+}
+
+/* COMÚN - Gris plateado */
+.result-cuppon.comun {
+    background: linear-gradient(135deg, rgba(227, 229, 232, 0.95) 0%, rgba(197, 199, 203, 0.95) 50%, rgba(245, 246, 248, 0.95) 100%);
+    color: #333333;
+    box-shadow: 
+        inset 0 2px 6px rgba(255, 255, 255, 0.8),
+        0 12px 35px rgba(140, 140, 140, 0.15),
+        0 0 40px rgba(190, 190, 190, 0.1);
+}
+
+.result-cuppon.comun:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        inset 0 2px 8px rgba(255, 255, 255, 0.9),
+        0 16px 45px rgba(140, 140, 140, 0.2),
+        0 0 50px rgba(190, 190, 190, 0.15);
+}
+
+/* POCO COMÚN - Verde menta pastel */
+.result-cuppon.pocoComun {
+    background: linear-gradient(135deg, rgba(213, 242, 233, 0.95) 0%, rgba(184, 232, 216, 0.95) 50%, rgba(168, 230, 217, 0.95) 100%);
+    color: #2d6b5c;
+    box-shadow: 
+        inset 0 2px 6px rgba(255, 255, 255, 0.85),
+        0 12px 35px rgba(100, 180, 150, 0.2),
+        0 0 50px rgba(150, 220, 190, 0.15);
+}
+
+.result-cuppon.pocoComun:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        inset 0 2px 8px rgba(255, 255, 255, 0.95),
+        0 16px 50px rgba(100, 180, 150, 0.3),
+        0 0 60px rgba(150, 220, 190, 0.25);
+}
+
+/* RARA - Azul suave nocturno con lavanda */
+.result-cuppon.raro {
+    background: linear-gradient(135deg, rgba(212, 229, 247, 0.95) 0%, rgba(184, 208, 232, 0.95) 50%, rgba(139, 168, 212, 0.95) 100%);
+    color: #1a2a4a;
+    box-shadow: 
+        inset 0 2px 6px rgba(255, 255, 255, 0.8),
+        0 14px 40px rgba(100, 140, 190, 0.25),
+        0 0 60px rgba(150, 180, 220, 0.2);
+}
+
+.result-cuppon.raro:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        inset 0 2px 8px rgba(255, 255, 255, 0.85),
+        0 18px 50px rgba(100, 140, 190, 0.35),
+        0 0 70px rgba(150, 180, 220, 0.3);
+}
+
+/* ÉPICA - Violeta rosado */
+.result-cuppon.epico {
+    background: linear-gradient(135deg, rgba(234, 212, 240, 0.95) 0%, rgba(216, 184, 232, 0.95) 50%, rgba(199, 133, 216, 0.95) 100%);
+    color: #fff;
+    box-shadow: 
+        inset 0 2px 6px rgba(255, 255, 255, 0.75),
+        0 15px 45px rgba(160, 100, 180, 0.3),
+        0 0 70px rgba(200, 150, 220, 0.2);
+}
+
+.result-cuppon.epico:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        inset 0 2px 8px rgba(255, 255, 255, 0.85),
+        0 20px 60px rgba(160, 100, 180, 0.4),
+        0 0 80px rgba(200, 150, 220, 0.3);
+}
+
+/* LEGENDARIA - Dorado champagne */
+.result-cuppon.legendario {
+    background: linear-gradient(135deg, rgba(245, 240, 224, 0.97) 0%, rgba(240, 227, 200, 0.97) 50%, rgba(232, 213, 177, 0.97) 100%);
+    color: #5a4a2e;
+    box-shadow: 
+        inset 0 2px 8px rgba(255, 255, 255, 0.9),
+        inset 0 0 30px rgba(220, 200, 120, 0.15),
+        0 18px 50px rgba(180, 150, 80, 0.25),
+        0 0 80px rgba(220, 200, 120, 0.2);
+}
+
+.result-cuppon.legendario:hover {
+    transform: translateY(-3px);
+    box-shadow: 
+        inset 0 2px 10px rgba(255, 255, 255, 0.95),
+        inset 0 0 40px rgba(220, 200, 120, 0.2),
+        0 24px 70px rgba(180, 150, 80, 0.35),
+        0 0 100px rgba(220, 200, 120, 0.3);
+}
+
+/* EXÓTICA - Iridiscente */
+.result-cuppon.exotico {
+    background: linear-gradient(135deg, rgba(240, 217, 255, 0.95) 0%, rgba(229, 184, 255, 0.95) 25%, rgba(212, 184, 255, 0.95) 50%, rgba(192, 212, 255, 0.95) 75%, rgba(208, 232, 255, 0.95) 100%);
+    color: #2a1a4a;
+    box-shadow: 
+        inset 0 2px 6px rgba(255, 255, 255, 0.8),
+        0 16px 50px rgba(180, 100, 200, 0.3),
+        0 0 80px rgba(200, 150, 255, 0.2),
+        0 0 40px rgba(150, 180, 255, 0.15);
+    animation: cuppon-iridescent 4s ease-in-out infinite;
+}
+
+@keyframes cuppon-iridescent {
+    0%, 100% {
+        filter: drop-shadow(0 0 20px rgba(200, 150, 255, 0.15));
+    }
+    50% {
+        filter: drop-shadow(0 0 30px rgba(150, 180, 255, 0.2));
+    }
+}
+
+.result-cuppon.exotico:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        inset 0 2px 8px rgba(255, 255, 255, 0.85),
+        0 20px 65px rgba(180, 100, 200, 0.4),
+        0 0 100px rgba(200, 150, 255, 0.3),
+        0 0 50px rgba(150, 180, 255, 0.25);
+}
+
+/* MÍTICA - Rojo vino con dorados */
+.result-cuppon.mitico {
+    background: linear-gradient(135deg, rgba(240, 212, 216, 0.97) 0%, rgba(232, 168, 184, 0.97) 30%, rgba(212, 83, 127, 0.97) 60%, rgba(217, 122, 143, 0.97) 100%);
+    color: #fff;
+    box-shadow: 
+        inset 0 2px 8px rgba(255, 255, 255, 0.7),
+        inset 0 0 40px rgba(220, 100, 150, 0.12),
+        0 20px 60px rgba(180, 60, 100, 0.4),
+        0 0 100px rgba(220, 100, 150, 0.3);
+    animation: cuppon-mitico-glow 1.8s ease-in-out infinite;
+}
+
+@keyframes cuppon-mitico-glow {
+    0%, 100% {
+        box-shadow: 
+            inset 0 2px 8px rgba(255, 255, 255, 0.7),
+            inset 0 0 40px rgba(220, 100, 150, 0.12),
+            0 20px 60px rgba(180, 60, 100, 0.4),
+            0 0 100px rgba(220, 100, 150, 0.3);
+    }
+    50% {
+        box-shadow: 
+            inset 0 2px 10px rgba(255, 255, 255, 0.8),
+            inset 0 0 50px rgba(220, 100, 150, 0.18),
+            0 25px 80px rgba(180, 60, 100, 0.5),
+            0 0 140px rgba(220, 100, 150, 0.45);
+    }
+}
+
+.result-message {
+    font-size: 1.35rem;
+    color: #333;
+    margin: 1rem 0 0.8rem 0;
+    font-weight: 700;
+}
+
+.save-redeem-actions {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+    margin-top: 1.5rem;
+}
+
+.save-redeem-actions button {
+    flex: 1;
+    padding: 0.8rem 1rem;
+    font-size: 0.95rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+.save-redeem-actions .save-button {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+.save-redeem-actions .save-button:hover:not(:disabled) {
+    background-color: #d0d0d0;
+}
+
+.save-redeem-actions .redeem-button {
+    background: linear-gradient(135deg, #ef707b 0%, #f08a95 100%);
+    color: white;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 15px rgba(239, 112, 123, 0.25);
+}
+
+.save-redeem-actions .redeem-button:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(239, 112, 123, 0.35);
+    background: linear-gradient(135deg, #f08a95 0%, #f3a4ad 100%);
+}
+
+.save-redeem-actions button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ===== BACKGROUND COLOR CHANGE ===== */
+
+body.bg-comun {
+    background: linear-gradient(135deg, #f4f5f7 0%, #e0e2e6 50%, #c8cad0 100%);
+}
+
+body.bg-poco-comun {
+    background: linear-gradient(135deg, #e8f9f5 0%, #d5f2e9 50%, #b8e8d8 100%);
+}
+
+body.bg-raro {
+    background: linear-gradient(135deg, #e8f0f9 0%, #d4e5f7 50%, #b8d0e8 100%);
+}
+
+body.bg-epico {
+    background: linear-gradient(135deg, #f0e8f9 0%, #ead4f0 50%, #d8b8e8 100%);
+}
+
+body.bg-legendario {
+    background: linear-gradient(135deg, #f9f6ee 0%, #f5f0e0 50%, #f0e3c8 100%);
+}
+
+body.bg-exotico {
+    background: linear-gradient(135deg, #f5eef9 0%, #f0d9ff 50%, #e5b8ff 100%);
+}
+
+body.bg-mitico {
+    background: linear-gradient(135deg, #f9e8eb 0%, #f0d4d8 50%, #e8a8b8 100%);
+}
+
+/* ===== CELEBRACIÓN Y CONFETI ===== */
+
+#celebration-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+.confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    pointer-events: none;
+    animation: fall linear forwards;
+}
+
+.confetti.comun {
+    background-color: #999;
+    opacity: 0.7;
+}
+
+.confetti.pocoComun {
+    background-color: #32cd32;
+    opacity: 0.8;
+}
+
+.confetti.raro {
+    background-color: #0277bd;
+    opacity: 0.8;
+}
+
+.confetti.epico {
+    background-color: #ba68c8;
+    opacity: 0.85;
+}
+
+.confetti.legendario {
+    background-color: #ff7043;
+    opacity: 0.9;
+}
+
+.confetti.exotico {
+    background-color: #26c6da;
+    opacity: 0.9;
+}
+
+.confetti.mitico {
+    background-color: #ffd700;
+    opacity: 1;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(100vh) rotateZ(360deg);
+        opacity: 0;
+    }
+}
+
+.spark {
+    position: fixed;
+    pointer-events: none;
+    border-radius: 50%;
+}
+
+.spark.comun {
+    background-color: #999;
+}
+
+.spark.pocoComun {
+    background-color: #32cd32;
+    box-shadow: 0 0 5px #32cd32;
+}
+
+.spark.raro {
+    background-color: #0277bd;
+    box-shadow: 0 0 5px #0277bd;
+}
+
+.spark.epico {
+    background-color: #ba68c8;
+    box-shadow: 0 0 8px #ba68c8;
+}
+
+.spark.legendario {
+    background-color: #ff7043;
+    box-shadow: 0 0 8px #ff7043;
+}
+
+.spark.exotico {
+    background-color: #26c6da;
+    box-shadow: 0 0 10px #26c6da;
+}
+
+.spark.mitico {
+    background-color: #ffd700;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.9), 0 0 25px rgba(255, 215, 0, 0.6);
+}
+
+/* ===== CUPONES GUARDADOS ===== */
+
+.saved-coupons {
+    margin-top: 2rem;
+    width: 100%;
+}
+
+.saved-coupons h3 {
+    text-align: center;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.saved-coupons ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.saved-coupon-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+    transition: all 0.3s ease;
+    animation: slideIn 0.3s ease-out;
+}
+
+.saved-coupon-item:hover {
+    background-color: #eeeeee;
+    transform: translateX(5px);
+}
+
+.saved-coupon-item.removing {
+    animation: slideOut 0.3s ease-out forwards;
+}
+
+.saved-coupon-item span {
+    flex: 1;
+    color: #555;
+    font-size: 0.95rem;
+}
+
+.saved-coupon-item .redeem-saved {
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.saved-coupon-item .redeem-saved:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.saved-coupon-item .redeem-saved:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.no-saved {
+    text-align: center;
+    padding: 2rem;
+    color: #999;
+    font-style: italic;
+}
+
+/* ===== ANIMACIONES DE TRANSICIÓN ===== */
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideOut {
+    to {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+.bounce {
+    animation: bounce 0.4s ease-in-out;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 600px) {
+    .wheel-image {
+        width: 250px;
+    }
+    
+    .result-rarity {
+        font-size: 1.4rem;
+    }
+    
+    .result-cuppon {
+        font-size: 1.1rem;
+    }
+    
+    .save-redeem-actions {
+        flex-direction: column;
+    }
+}

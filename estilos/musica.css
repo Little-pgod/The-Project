@@ -1,0 +1,399 @@
+/* Música page enhancements */
+
+.app-body.musica-page {
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+    color: #391d35;
+    background: linear-gradient(180deg, #fff2ff 0%, #ffe5fb 36%, #fffafd 100%);
+}
+
+.app-body.musica-page::before,
+.app-body.musica-page::after,
+.music-background::before,
+.music-background::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    border-radius: 50%;
+    opacity: 0.85;
+    z-index: -2;
+}
+
+.app-body.musica-page::before {
+    width: 110%;
+    height: 110%;
+    top: -5%;
+    left: -12%;
+    background: radial-gradient(circle at 14% 18%, rgba(255, 214, 116, 0.65), transparent 22%),
+                radial-gradient(circle at 60% 30%, rgba(110, 236, 214, 0.58), transparent 24%),
+                radial-gradient(circle at 30% 84%, rgba(199, 139, 255, 0.52), transparent 20%);
+}
+
+.app-body.musica-page::after {
+    width: 120%;
+    height: 120%;
+    bottom: -14%;
+    right: -10%;
+    background: radial-gradient(circle at 72% 22%, rgba(139, 218, 255, 0.58), transparent 24%),
+                radial-gradient(circle at 42% 45%, rgba(255, 172, 214, 0.54), transparent 18%),
+                radial-gradient(circle at 80% 86%, rgba(168, 255, 234, 0.42), transparent 26%);
+}
+
+.music-background::before {
+    width: 96%;
+    height: 96%;
+    top: 8%;
+    left: 6%;
+    background: radial-gradient(circle at 20% 14%, rgba(255, 194, 105, 0.6), transparent 24%),
+                radial-gradient(circle at 75% 30%, rgba(117, 217, 255, 0.45), transparent 20%);
+}
+
+.music-background::after {
+    width: 102%;
+    height: 102%;
+    bottom: 4%;
+    right: 8%;
+    background: radial-gradient(circle at 84% 18%, rgba(243, 159, 255, 0.55), transparent 22%),
+                radial-gradient(circle at 38% 74%, rgba(137, 255, 224, 0.42), transparent 24%);
+}
+
+/* Static background with low-cost gradients */
+
+/* Entrance overlay: blank white screen that reveals the flowing colors */
+.entrance-overlay {
+    position: fixed;
+    inset: 0;
+    background: white;
+    z-index: 5; /* above background but below title */
+    opacity: 1;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+    pointer-events: none;
+}
+
+.entrance-overlay.revealed {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* Hero card entrance */
+.hero-card.musica-card {
+    opacity: 0;
+    transform: translateY(14px) scale(0.998);
+    transition: opacity 0.6s cubic-bezier(.2,.9,.2,1), transform 0.6s cubic-bezier(.2,.9,.2,1);
+}
+
+.hero-card.musica-card.card-show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* Song items initial state and reveal */
+.song-list li {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.36s ease, transform 0.36s ease;
+}
+
+.song-list li.song-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Static background with no motion */
+
+@media (prefers-reduced-motion: reduce) {
+    .app-body.musica-page::before,
+    .app-body.musica-page::after,
+    .music-background::before,
+    .music-background::after,
+    .app-body.musica-page.flowing::before,
+    .app-body.musica-page.flowing::after,
+    .app-body.musica-page.flowing .music-background::before,
+    .app-body.musica-page.flowing .music-background::after {
+        animation: none !important;
+        transition: none !important;
+        opacity: 0.75 !important;
+        transform: none !important;
+    }
+
+    .entrance-overlay,
+    .hero-card.musica-card,
+    .song-list li {
+        transition: none !important;
+    }
+}
+
+.app-header {
+    position: relative;
+    z-index: 50;
+    background: transparent;
+    border-bottom: none;
+    box-shadow: none;
+}
+
+/* Keep menu aligned to top-right only in musica page */
+.musica-page .app-header {
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.app-main.musica-shell {
+    min-height: calc(100vh - 84px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 30px 24px 50px;
+    gap: 24px;
+}
+
+.page-hero-title {
+    max-width: 840px;
+    width: 100%;
+    display: grid;
+    gap: 24px;
+    text-align: center;
+    position: relative;
+    z-index: 60; /* keep title above overlay */
+}
+
+.page-hero-title h1 {
+    margin: 0;
+    font-size: clamp(3rem, 5vw, 4.8rem);
+    line-height: 0.96;
+    color: #7e1f52;
+    text-shadow: 0 16px 40px rgba(255, 255, 255, 0.75);
+    letter-spacing: 0.02em;
+}
+
+.page-intro {
+    margin: 0 auto;
+    max-width: 720px;
+    font-size: 1.05rem;
+    color: #6a425d;
+    line-height: 1.8;
+}
+
+.page-intro {
+    margin: 0 auto;
+    max-width: 760px;
+    font-size: 1.05rem;
+    color: #68465f;
+    line-height: 1.8;
+    text-shadow: 0 0 0 rgba(0,0,0,0);
+}
+
+.hero-card.musica-card {
+    position: relative;
+    width: min(100%, 980px);
+    padding: 28px 32px 36px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 245, 250, 0.98));
+    border-radius: 42px;
+    border: 1px solid rgba(255, 196, 216, 0.35);
+    box-shadow: 0 18px 34px rgba(143, 45, 98, 0.08);
+    overflow: hidden;
+}
+
+.hero-card.musica-card::before,
+.hero-card.musica-card::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.hero-card.musica-card::before {
+    width: 260px;
+    height: 260px;
+    top: -70px;
+    right: -100px;
+    background: radial-gradient(circle, rgba(255, 172, 203, 0.26), transparent 58%);
+}
+
+.hero-card.musica-card::after {
+    width: 480px;
+    height: 480px;
+    bottom: -160px;
+    left: -190px;
+    background: radial-gradient(circle, rgba(154, 120, 205, 0.18), transparent 48%);
+}
+
+.hero-card.musica-card .modal-header {
+    position: relative;
+    z-index: 2;
+    padding: 14px 0 8px;
+}
+
+.hero-card.musica-card h2 {
+    margin-bottom: 10px;
+    font-size: clamp(2.1rem, 5vw, 3.3rem);
+    letter-spacing: 0.05em;
+    color: #8a2f63;
+    text-shadow: 0 2px 14px rgba(255, 255, 255, 0.75);
+}
+
+.hero-card.musica-card p {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #6a435b;
+}
+
+.song-list {
+    margin-top: 28px;
+    list-style: none;
+    display: grid;
+    gap: 14px;
+    padding: 0;
+}
+
+.song-list li {
+    position: relative;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(239, 151, 188, 0.35);
+    border-radius: 22px;
+    padding: 18px 24px;
+    box-shadow: 0 16px 40px rgba(158, 65, 105, 0.08);
+    transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+}
+
+.song-list li:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 24px 54px rgba(158, 65, 105, 0.14);
+    border-color: rgba(255, 118, 158, 0.55);
+}
+
+.song-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
+    color: #5c3151;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.25s ease, transform 0.25s ease;
+}
+
+.song-link:hover {
+    color: #a74274;
+    transform: translateX(3px);
+}
+
+.song-link::after {
+    content: '♪';
+    opacity: 0.65;
+    transition: transform 0.25s ease;
+}
+
+.song-link:hover::after {
+    transform: translateX(4px);
+}
+
+@media (max-width: 840px) {
+    .app-main.musica-shell {
+        min-height: auto;
+        margin-top: 10px;
+        padding: 26px 20px 34px;
+    }
+
+    .hero-card.musica-card {
+        padding: 30px 24px;
+        border-radius: 32px;
+    }
+
+    .song-list li {
+        padding: 14px 18px;
+    }
+}
+
+@media (max-width: 560px) {
+    .app-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 18px;
+    }
+
+    .song-list li {
+        padding: 12px 16px;
+    }
+}
+.music-background {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background: radial-gradient(circle at 15% 20%, rgba(255, 180, 210, 0.14), transparent 25%),
+                radial-gradient(circle at 78% 18%, rgba(194, 224, 255, 0.14), transparent 24%),
+                radial-gradient(circle at 50% 75%, rgba(215, 190, 255, 0.12), transparent 28%);
+}
+
+.music-floating-notes {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.note-floating {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(var(--note-color, 255, 220, 240), 0.90);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    display: grid;
+    place-items: center;
+    color: #fff;
+    font-size: 0.95rem;
+    z-index: 0;
+    will-change: transform, opacity;
+}
+
+.note-floating::before {
+    content: attr(data-icon);
+    display: inline-block;
+    transform: rotate(0deg);
+}
+
+.shape-circle {
+    border-radius: 999px;
+}
+
+.shape-rounded {
+    border-radius: 24px;
+}
+
+.shape-square {
+    border-radius: 18px;
+}
+
+.shape-diamond {
+    transform: rotate(45deg);
+}
+
+.shape-diamond::before {
+    transform: rotate(-45deg);
+}
+
+.shape-heart {
+    border-radius: 24px;
+    background: linear-gradient(135deg, rgba(var(--note-color,255,152,206),0.92), rgba(255,255,255,0.75));
+}
+
+.shape-spark {
+    border-radius: 16px;
+    background: rgba(var(--note-color,166,255,196), 0.88);
+}
+
+@keyframes drift {
+    0% { transform: translateX(-8px) translateY(0) scale(1); opacity: 0.92; }
+    40% { transform: translateX(10px) translateY(-14px) scale(1.04); opacity: 0.85; }
+    100% { transform: translateX(-12px) translateY(-36px) scale(1.02); opacity: 0.70; }
+}
+
+.app-header,
+.app-main.musica-shell,
+.hero-card.musica-card {
+    position: relative;
+    z-index: 1;
+}

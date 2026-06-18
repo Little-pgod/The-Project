@@ -1,0 +1,103 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+      rel="stylesheet"
+    />
+    <title>Extras</title>
+    <link rel="stylesheet" href="estilos/extras.css" />
+  </head>
+  <body>
+    <!--Confeti Atras-->
+    <canvas id="canvas1"></canvas>
+
+    <div class="contenedor">
+      <!-- PortaRetrato -->
+      <div class="portaretrato-torta-caja">
+        <div class="portaretrato">
+          <div class="marco">
+            <img src="imagenes/cumpleañosspace.png" alt="Foto" />
+          </div>
+          <div class="soporte-marco"></div>
+        </div>
+
+        <!--Torta De Cumpleaños-->
+        <div class="torta-cumpleaños">
+          <div class="torta">
+            <div class="chocolate"></div>
+          </div>
+          <div class="vela"></div>
+          <div class="llama"></div>
+        </div>
+
+        <!--Caja De Regalo-->
+        <div class="caja-wrapper">
+          <div class="caja">
+            <div class="cinta-de-regalo">
+              <div class="cinta-de-regalo-izquierda"></div>
+              <div class="cinta-de-regalo-derecha"></div>
+              <div class="cinta-de-regalo-centro"></div>
+            </div>
+            <div class="regalos">
+              <div class="regalo-sombra"></div>
+            </div>
+            <div class="regalo"></div>
+            <div class="icono-estrella estrella1"></div>
+            <div class="icono-estrella estrella2"></div>
+            <div class="icono-estrella estrella3"></div>
+            <div class="icono-estrella estrella4"></div>
+            <div class="icono-estrella estrella5"></div>
+          </div>
+        </div>
+
+        <!--Mensaje Feliz Cumpleaños-->
+        <div class="happy-birthday">Happy Birthday</div>
+      </div>
+
+      <!--Mesa-->
+      <div class="soporte"></div>
+    </div>
+
+    <!-- Carta Modal -->
+    <div class="modal-carta" id="modalCarta">
+      <div class="contenido-carta">
+        <div class="carta">
+          <h2>Querida Sulmy</h2>
+          <p>
+            Feliz cumpleaños, mi hermosa singularidad. 
+            A ti, querida paz, querido mundo. Ya estás cumpliendo 22 años, y me alegra mucho ello. Me alegra que sigas caminando a pesar de todo, tanto y tan poco tiempo a la vez, increíble y única en cada instante.
+            Nunca olvides lo preciada que eres para el mundo.
+            Eres totalmente suficiente para arrasar con todo tú sola, pero a pesar de ello, no estás sola, pues tienes a muchas personas que te apoyarán en el camino. De la manera más fiel posible te digo que, si en algún momento todos dudasen de ti, me tienes a mí, quien confía en ti sin importar las circunstancias. Gracias por existir, gracias por ser y gracias por estar.
+            Que el mundo se arrodille ante ti, mi querida doncella.  
+            Tan única eres, con esa belleza, con esa personalidad, con esa razón de ser tan tuya, que no hay quien intentase replicarlo sin fracasar en el intento. Nadie es como tú, y nadie nunca será como tú, querido punto en el espacio-tiempo, tan único y diferente al resto.
+            Con el corazón y alma en mano digo que te amo.  
+            Mi deseo cada día para ti es que logres cada cosita propuesta, y que sonrías cada día más. Pues eres mi todo, y así lo serás para siempre.
+          </p>
+          <p class="firma">Con amor,<br />Para mi singularidad</p>
+        </div>
+      </div>
+    </div>
+
+    <!--Confeti Delante-->
+    <canvas id="canvas2"></canvas>
+
+    <!--Todo Oscuro-->
+    <audio id="soplido" src="musica/extrassoplar.mp3" preload="auto"></audio>
+    <audio
+      id="cancion"
+      src="musica/felizcumpleaños.mp3"
+      preload="auto"
+    ></audio>
+    <div class="overlay"></div>
+
+    <script src="scripts/extras.js"></script>
+    <script src="scripts/liquid-melt.js"></script>
+  </body>
+</html>
+

@@ -1,0 +1,461 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    font-family: 'Poppins', 'Dancing Script', sans-serif;
+}
+
+.razones-container {
+    min-height: 100vh;
+    position: relative;
+    padding: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Fondo tipo papel */
+.background-paper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, #fef9f3 0%, #fdf5ed 50%, #fef9f3 100%);
+    background-attachment: fixed;
+    z-index: -2;
+    pointer-events: none;
+}
+
+.razones-wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    width: 100%;
+}
+
+/* Header */
+.razones-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.razones-title {
+    font-family: 'Playfair Display', 'Dancing Script', serif;
+    font-size: 3rem;
+    color: #8b3a3a;
+    margin-bottom: 5px;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(139, 58, 58, 0.1);
+}
+
+.razones-subtitle {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.4rem;
+    color: #a0606a;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.razones-subtitle {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.4rem;
+    color: #a0606a;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+/* Calendario clásico */
+.calendar-container {
+    background: linear-gradient(135deg, #fffef5 0%, #fff8ef 100%);
+    border: 3px solid #d4a574;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 10px 40px rgba(139, 58, 58, 0.08);
+}
+
+.calendar-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.day-header {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #8b3a3a;
+    padding: 12px 0;
+    border-bottom: 2px solid #d4a574;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+}
+
+.day-cell {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fffef5;
+    border: 2px solid #e8d4c4;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #8b3a3a;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.day-cell::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+    transition: left 0.5s ease;
+}
+
+.day-cell:hover::before {
+    left: 100%;
+}
+
+.day-cell:hover {
+    background: linear-gradient(135deg, #fff5f0, #ffe8e0);
+    border-color: #c94d5c;
+    transform: scale(1.08);
+    box-shadow: 0 5px 15px rgba(201, 77, 92, 0.2);
+}
+
+.day-cell:active {
+    transform: scale(0.95);
+}
+
+.day-cell.locked {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: #f6f1eb;
+    border-color: #d8c0b0;
+    color: #957070;
+    box-shadow: none;
+}
+
+.day-cell.locked:hover {
+    transform: none;
+}
+
+.lock-icon {
+    display: block;
+    margin-top: 0.35rem;
+    width: 16px;
+    height: 18px;
+    position: relative;
+}
+
+.lock-icon::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 3px;
+    width: 10px;
+    height: 10px;
+    border: 2px solid #957070;
+    border-radius: 4px;
+    background: #f6f1eb;
+}
+
+.lock-icon::after {
+    content: '';
+    position: absolute;
+    top: -7px;
+    left: 5px;
+    width: 5px;
+    height: 7px;
+    border: 2px solid #957070;
+    border-bottom: none;
+    border-radius: 4px 4px 0 0;
+}
+
+.day-cell.today {
+    border-color: #c94d5c;
+    box-shadow: 0 0 0 3px rgba(201, 77, 92, 0.12);
+}
+
+.day-number {
+    font-size: 1.3rem;
+    position: relative;
+    z-index: 2;
+}
+
+/* Modal con efecto de desgarre */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(3px);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+/* Efecto de desgarre */
+.torn-paper {
+    position: relative;
+    animation: paperTear 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes paperTear {
+    0% {
+        clip-path: polygon(
+            0% 0%, 100% 0%, 100% 100%, 0% 100%
+        );
+        transform: scale(0.8) rotateZ(-5deg);
+        opacity: 0;
+    }
+    50% {
+        clip-path: polygon(
+            2% 5%, 98% 2%, 95% 98%, 3% 95%
+        );
+    }
+    75% {
+        clip-path: polygon(
+            1% 3%, 99% 1%, 97% 99%, 2% 98%
+        );
+    }
+    100% {
+        clip-path: polygon(
+            0% 0%, 100% 0%, 100% 100%, 0% 100%
+        );
+        transform: scale(1) rotateZ(0deg);
+        opacity: 1;
+    }
+}
+
+.modal-content {
+    background: linear-gradient(135deg, #fff5f0 0%, #ffe8e0 100%);
+    border-radius: 15px;
+    padding: 45px 40px;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: 
+        0 25px 50px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    border: 2px solid #f0d9d0;
+    position: relative;
+}
+
+.modal-content::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 15%;
+    width: 30%;
+    height: 8px;
+    background: #fff5f0;
+    border-radius: 50%;
+    box-shadow: 
+        50px 0 0 rgba(255, 245, 240, 0.8),
+        100px 0 0 rgba(255, 245, 240, 0.6),
+        150px 0 0 rgba(255, 245, 240, 0.7);
+    filter: blur(1px);
+}
+
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 35px;
+    height: 35px;
+    background: none;
+    border: none;
+    font-size: 28px;
+    color: #8b3a3a;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    padding: 0;
+}
+
+.modal-close:hover {
+    transform: rotate(90deg);
+    color: #c94d5c;
+}
+
+.modal-body {
+    text-align: center;
+}
+
+.modal-date {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    color: #8b3a3a;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-shadow: 0 2px 4px rgba(139, 58, 58, 0.1);
+}
+
+.modal-reason {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.08rem;
+    line-height: 1.9;
+    color: #5a4d56;
+    font-style: italic;
+    margin: 0;
+    letter-spacing: 0.4px;
+}
+
+/* Decoración de corazones removida (sin emojis) */
+
+/* Empty cells */
+.day-cell.empty {
+    background: transparent;
+    border: none;
+    cursor: default;
+}
+
+.day-cell.empty:hover {
+    background: transparent;
+    border: none;
+    transform: scale(1);
+    box-shadow: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .razones-title {
+        font-size: 2.2rem;
+    }
+
+    .razones-subtitle {
+        font-size: 1.1rem;
+    }
+
+    .calendar-container {
+        padding: 20px;
+    }
+
+    .day-cell {
+        font-size: 0.95rem;
+    }
+
+    .day-number {
+        font-size: 1.1rem;
+    }
+
+    .modal-content {
+        padding: 35px 30px;
+    }
+
+    .modal-date {
+        font-size: 1.8rem;
+    }
+
+    .modal-reason {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .razones-container {
+        padding: 30px 15px 50px;
+    }
+
+    .razones-header {
+        margin-bottom: 30px;
+    }
+
+    .razones-title {
+        font-size: 1.8rem;
+    }
+
+    .razones-subtitle {
+        font-size: 1rem;
+    }
+
+    .calendar-container {
+        padding: 15px;
+    }
+
+    .day-header {
+        font-size: 0.8rem;
+        padding: 8px 0;
+    }
+
+    .day-cell {
+        font-size: 0.85rem;
+    }
+
+    .day-number {
+        font-size: 0.95rem;
+    }
+
+    .calendar-grid {
+        gap: 6px;
+    }
+
+    .modal-overlay {
+        padding: 15px;
+    }
+
+    .modal-content {
+        padding: 25px 20px;
+        border-radius: 12px;
+    }
+
+    .modal-close {
+        width: 30px;
+        height: 30px;
+        font-size: 24px;
+        top: 15px;
+        right: 15px;
+    }
+
+    .modal-date {
+        font-size: 1.4rem;
+        margin-bottom: 15px;
+    }
+
+    .modal-reason {
+        font-size: 0.95rem;
+        line-height: 1.7;
+    }
+
+    .modal-decoration {
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .modal-heart {
+        font-size: 1.4rem;
+    }
+}
+

@@ -1,0 +1,132 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Marck+Script&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Great+Vibes&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="estilos/cartas.css">
+    <style>
+        /* Hoja (contenido) — papel clásico, centrado y auto-height */
+        .carta {
+            background: transparent !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            padding: 18px; /* espacio interior del sobre, no de la hoja */
+        }
+        .carta .contenido {
+            background: #F5F1E8 !important; /* papel crema envejecido */
+            border: none !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            /* tamaño de la hoja: ancho ligeramente mayor, alto reducido 2px */
+            width: calc(100% - 26px);
+            margin: 0 auto;
+            padding: 29px 54px; /* menos padding vertical para reducir altura */
+            box-sizing: border-box;
+            height: auto; /* auto-height para evitar scroll */
+            overflow: visible;
+        }
+        /* Saludo elegante y legible (rojo tipo sangre más intenso) */
+        .carta .contenido strong {
+            display: block;
+            font-family: 'Great Vibes', 'Marck Script', cursive;
+            font-size: 40px;
+            color: #8b0000; /* rojo sangre intenso */
+            font-style: italic;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+            margin-bottom: 10px;
+            line-height: 1;
+            text-shadow: 0 2px 4px rgba(139, 0, 0, 0.12);
+        }
+        /* Línea orgánica tipo trazo: muy fina (1px) con degradado dorado, alineada a la izquierda */
+        .carta .contenido .divider {
+            position: relative;
+            display: block;
+            margin: 6px 0 16px 0; /* alineada al borde izquierdo del contenido */
+            width: 46%;
+            height: 1px; /* muy fina */
+            background: linear-gradient(90deg, #c18f04 0%, #d4af37 45%, rgba(212,175,55,0.6) 70%, rgba(255,255,255,0) 100%);
+            border-radius: 1px;
+            box-shadow: inset 0 0 0 rgba(255,255,255,0.02);
+            overflow: visible;
+        }
+        .carta .contenido .divider::after {
+            content: "";
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 1px;
+            width: 60%;
+            background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0));
+            border-radius: 1px;
+            pointer-events: none;
+            mix-blend-mode: multiply;
+        }
+        /* Cuerpo con serif clásico en cursiva, legible */
+        .carta .contenido p {
+            margin: 0;
+            font-family: 'Crimson Text', 'Merriweather', Georgia, serif;
+            font-size: 17px;
+            color: #5d3228;
+            line-height: 1.95;
+            text-align: justify;
+            font-style: italic;
+        }
+        .carta .contenido .firma {
+            margin-top: 18px;
+            text-align: right;
+            font-family: 'Great Vibes', cursive;
+            font-size: 26px;
+            color: #8b0000; /* rojo sangre intenso para firma */
+            letter-spacing: 0.3px;
+            line-height: 1.1;
+            text-shadow: 0 1px 2px rgba(139, 0, 0, 0.12);
+        }
+        .carta .contenido .firma span {
+            display: block;
+            font-size: 14px;
+            font-family: 'Crimson Text', Georgia, serif;
+            font-style: normal;
+            color: rgba(93, 50, 40, 0.8);
+            margin-top: 4px;
+        }
+        /* Asegurar que no haya bordes ni sombras alrededor de la hoja */
+        .carta .contenido, .carta {
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+    </style>
+    <title>Cartita</title>
+</head>
+<body>
+    <h1>una carta para quien es mi camino</h1>
+    <div class="contenedor">
+        <div class="envoltura-sobre">
+            <div class="sobre">
+                <div class="carta">
+                    <div class="contenido">
+                        <strong>Querida Estrellita</strong>
+                        <div class="divider"></div>
+                        <p>
+                            Mira al cielo... Mira al cielo esta noche, verás que todas las estrellas tienen una razón de ser, y tú eres la mía cuando me estoy cayendo a pedazos. Mucho más que hermosa, mucho más que perfecta, y con ese brillo, que sin importar la distancia, nunca se apaga. Viendo tus ojos entendí y descubrí la belleza del universo, tan solo en ti, querida niña. Te amo con todo mi ser.
+                        </p>
+                        <div class="firma">
+                            Con todo mi amor,
+                            <span>Jhunior</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="corazon"></div>
+            <div class="solapa-derecha"></div>
+            <div class="solapa-izquierda"></div>
+        </div>
+    </div>
+    <!-- <script src="script_v2.js"></script> -->
+     <script src="scripts/cartas.js"></script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Nuestras razones</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Marck+Script&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="estilos/razones.css">
+</head>
+<body>
+    <div class="razones-container">
+        <!-- Fondo -->
+        <div class="background-paper"></div>
+
+        <!-- Contenedor principal -->
+        <div class="razones-wrapper">
+            <!-- Header (solo fecha/mes) -->
+            <header class="razones-header">
+                <p class="razones-subtitle" id="monthLabel">Junio 2026</p>
+            </header>
+
+            <!-- Calendario clásico -->
+            <div class="calendar-container">
+                <div class="calendar-header">
+                    <div class="day-header">Lun</div>
+                    <div class="day-header">Mar</div>
+                    <div class="day-header">Mié</div>
+                    <div class="day-header">Jue</div>
+                    <div class="day-header">Vie</div>
+                    <div class="day-header">Sab</div>
+                    <div class="day-header">Dom</div>
+                </div>
+                <div class="calendar-grid" id="calendarGrid"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para mostrar razón con efecto de desgarre -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="torn-paper" id="tornPaper">
+            <div class="modal-content">
+                <button class="modal-close" id="modalClose">&times;</button>
+                <div class="modal-body">
+                    <div class="modal-date" id="modalDate"></div>
+                    <p class="modal-reason" id="modalReason"></p>
+                </div>
+                <!-- Decoración removida (sin emojis) -->
+            </div>
+        </div>
+    </div>
+
+    <script src="scripts/razones.js"></script>
+</body>
+</html>

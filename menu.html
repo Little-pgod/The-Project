@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Amor - Regalos</title>
+    <link rel="stylesheet" href="estilos/base.css">
+    <link rel="stylesheet" href="estilos/menu.css">
+</head>
+<body class="app-body menu-page">
+    <div class="terms-overlay" id="termsOverlay">
+        <div class="terms-card">
+            <h1>Términos y condiciones</h1>
+            <p>Este es el proyecto en el que estuve trabajando, espero que te guste, pues lo hice con mucho cariño. Gracias por todo mi amor, te amo con alma y cuerpo</p>
+            <p>Al aceptar tendrás acceso a todo el contenido especial que he preparado para ti.</p>
+            <ul>
+                <li>Verás cartas, música, días y detalles especiales desde esta ventana.</li>
+            </ul>
+            <label class="terms-checkbox" for="termsCode">Código de acceso secreto</label>
+            <input id="termsCode" class="terms-input" type="password" placeholder="Introduce el código" autocomplete="off">
+            <p id="termsError" class="terms-error" aria-live="polite"></p>
+            <button id="btnAgree" class="button button-primary" disabled>Entrar</button>
+        </div>
+    </div>
+
+    <header class="app-header">
+        <div class="header-left">
+            <div class="brand-badge"></div>
+            <div>
+                <h1>Mi Amor</h1>
+                <p>Bienvenida a tu espacio especial</p>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="header-note">
+                <p>PARA MI SINGULARIDAD</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="app-main menu-main">
+        <section class="menu-banner">
+            <div class="love-card">
+                <p class="love-card-title">TE AMO</p>
+                <p class="love-card-text">Y pase lo que pase siempre lo haré, no lo olvides, y no olvides mis promesas, pues eres tú mi razón de ser. Tal vez a veces sea confuso o a veces sientas miedo, pero yo permaneceré aquí para acompañarte y hacer tus días más felices. Y si dudas de mí está bien, y cuando todo esté claro, yo estaré esperando justo aquí.</p>
+            </div>
+            <div class="gift-grid" id="sectionOptions"></div>
+        </section>
+    </main>
+
+    <script src="scripts/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,253 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primario: #fff;
+    --fondo: #ffebf2; 
+    --fondo-sobre: #ffe3ed; 
+    --solapa-sobre: #ffccd5; 
+    --cuerpo-sobre: #ffc1d1; 
+    --sombra: rgba(0, 0, 0, 0.18);
+    --texto: #102a43; 
+    --corazon: #ff477e; 
+}
+
+body {
+    background: var(--fondo);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100vh;
+}
+
+h1 {
+    font-family: "Marck Script", serif; 
+    text-align: center;
+    font-size: 60px;
+    margin-bottom: 50px;
+    color: #444;
+}
+
+.contenedor {
+    width: 640px;
+    max-width: 95%;
+}
+
+.envoltura-sobre {
+    position: relative;
+    background-color: var(--fondo-sobre);
+    box-shadow: 0 0 40px var(--sombra);
+    border-radius: 20px;
+}
+
+.sobre {
+    position: relative;
+    width: 640px;
+    height: 380px;
+}
+
+.sobre::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 4;
+    border-top: 200px solid var(--solapa-sobre);
+    border-right: 320px solid transparent;
+    border-left: 320px solid transparent;
+    transform-origin: top;
+    transition: all 0.5s ease-in-out 0.7s;
+    border-radius: 14px;
+}
+
+.solapa-derecha {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    clip-path: polygon(100% 0, 0 100%, 100% 100%);
+    background-color: var(--cuerpo-sobre);
+    border-bottom-right-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.solapa-izquierda {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    clip-path: polygon(0 0, 0 100%, 100% 100%);
+    background-color: var(--cuerpo-sobre);
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.carta {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--primario);
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    padding: 28px;
+    border-radius: 0;
+    transition: transform .5s ease-in-out;
+}
+
+.contenido {
+    font-family: "Merriweather", Georgia, serif;
+    color: var(--texto);
+    text-align: left;
+    font-size: 18.5px;
+    font-weight: 300;
+    font-style: italic;
+    color: rgba(16,42,67,0.95);
+    border: none;
+    border-radius: 0;
+    padding: 30px;
+    height: auto;
+    line-height: 2.05;
+    cursor: default;
+    overflow: visible;
+    background: none;
+    box-shadow: none;
+}
+
+.contenido strong {
+    display: block;
+    font-family: "Playfair Display", "Marck Script", serif;
+    font-size: 32px;
+    margin-bottom: 18px;
+    color: #7a1b45;
+    letter-spacing: 0.01em;
+    font-weight: 700;
+    font-style: italic;
+}
+
+.contenido p {
+    margin-top: 0.6rem;
+    font-size: 18px;
+}
+
+.contenido p {
+    margin-top: 0.7rem;
+}
+
+.corazon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 30px;
+    height: 30px;
+    background-color: var(--corazon);
+    transform: translate(-50%,0) rotate(45deg);
+    transition: transform 0.5s ease-in-out 1s;
+    z-index: 999;
+    cursor: pointer;
+}
+
+.corazon::before,
+.corazon::after {
+    content: "";
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background-color: var(--corazon);
+    border-radius: 100%;
+
+}
+
+.corazon:before {
+    top: -15px;
+}
+
+.corazon:after {
+    right: 15px;
+}
+
+/*Agregar clases dinamicos*/
+.abierto .sobre::before {
+    transform: rotateX(180deg);
+    z-index: 0;
+}
+
+.abierto .corazon {
+    transform: rotate(90deg);
+    transition-delay: 0.4s;
+}
+
+.carta.mostrar-carta {
+    transform: translateY(-320px);
+    transition: transform .5s ease-in-out;
+}
+
+.carta.cerrando-carta {
+    transform: translateY(-320px);
+    transition: transform .5s ease-in-out;
+}
+
+.carta.abierta {
+    z-index: 10000;
+}
+
+.envoltura-sobre.desactivar-sobre .sobre::before {
+    pointer-events: none;
+}
+
+/*Scroll personalizado*/
+
+/*
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--cuerpo-sobre);
+    border-radius: 4px;
+}
+
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--corazon);
+}
+*/
+
+/*Vista celular*/
+
+@media screen and (max-width:400px) {
+    .contenedor {
+        width: 300px;
+    }
+
+    .sobre {
+        width: 300px;
+        height: 250px;
+    }
+
+    .sobre::before {
+        border-top:140px solid var(--solapa-sobre) ;
+        border-right: 150px solid transparent;
+        border-left: 150px solid transparent;
+    }
+
+}
+
+
+
+
+
