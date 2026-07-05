@@ -10,9 +10,36 @@
     <!-- CSS -->
     <link rel="stylesheet" href="estilos/base.css">
     <link rel="stylesheet" href="estilos/index.css">
+    <link rel="stylesheet" href="estilos/bloqueo.css">
 
 </head>
 <body class="pantalla-inicio">
+
+        <!-- BLOQUEO -->
+    <div id="bloqueo" class="bloqueo">
+
+        <div class="ventana-bloqueo">
+            <h2>REPERTORIO SUSPENDIDO</h2>
+
+            <p>
+                El acceso se encuentra deshabilitado.<br>
+                Si necesitas ingresar, contacta al administrador.
+            </p>
+
+            <input
+                type="password"
+                id="codigo"
+                placeholder="Código de acceso"
+                autocomplete="off">
+
+            <button id="btnCodigo">
+                Desbloquear
+            </button>
+
+            <p id="mensaje"></p>
+        </div>
+
+    </div>
 
     <!-- CONTENEDOR -->
     <div class="contenedor-inicio">
@@ -37,6 +64,7 @@
 
     </div>
 
+    <script src="scripts/bloqueo.js"></script>
     <script src="scripts/script.js"></script>
 
 </body>

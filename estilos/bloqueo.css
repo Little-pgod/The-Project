@@ -1,0 +1,54 @@
+.bloqueo{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.65);
+    backdrop-filter:blur(8px);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:99999;
+}
+
+.ventana-bloqueo{
+    width:360px;
+    background:white;
+    padding:30px;
+    border-radius:18px;
+    text-align:center;
+    box-shadow:0 15px 40px rgba(0,0,0,.35);
+}
+
+.ventana-bloqueo h2{
+    margin-top:0;
+    color:#d53030;
+}
+
+.ventana-bloqueo input{
+    width:90%;
+    padding:12px;
+    margin-top:20px;
+    border-radius:10px;
+    border:1px solid #ccc;
+    font-size:16px;
+}
+
+.ventana-bloqueo button{
+    margin-top:20px;
+    padding:12px 24px;
+    border:none;
+    border-radius:10px;
+    background:#d53030;
+    color:white;
+    cursor:pointer;
+    font-size:16px;
+}
+
+.ventana-bloqueo button:hover{
+    transform:scale(1.05);
+}
+
+#mensaje{
+    margin-top:15px;
+    color:red;
+    font-weight:bold;
+}

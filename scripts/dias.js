@@ -239,22 +239,21 @@ function startFloatingObjects() {
 function showCountdown() {
   const container = document.getElementById('countdown');
   let startParam = getURLParam('start');
+  let startDate = startParam ? new Date(startParam + 'T00:00:00') : new Date(moments[currentMomentIndex].date + 'T00:00:00');
 
   function formatSpanishDate(date) {
     const meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
     return `${date.getDate()} de ${meses[date.getMonth()]} del ${date.getFullYear()}`;
   }
+
   function update() {
     const now = new Date();
-    // Recalcula la fecha de inicio según el momento actual (o parámetro 'start')
-    let startDate = startParam ? new Date(startParam + 'T00:00:00') : new Date(moments[currentMomentIndex].date + 'T00:00:00');
-    let days = Math.floor((now - startDate) / (1000 * 60 * 60 * 24));
-    const title = moments[currentMomentIndex] ? moments[currentMomentIndex].title : '';
+    let diff = now - startDate;
+    let days = Math.floor(diff / (1000 * 60 * 60 * 24));
 
     container.innerHTML =
-      `<div style="font-weight:700; color:#e60026; margin-bottom:0.25em;">${title}</div>` +
-      `<div style="font-size:1.15em;"><b>${days}</b> días</div>` +
-      `<div style="display:block; margin-top:0.35em; font-size:0.92em; color:#555;">${formatSpanishDate(startDate)}</div>`;
+      `Llevamos juntos: <b>${days}</b> días<br>` +
+      `<span style="display:block; margin-top:0.35em; font-size:0.95em; color:#555;">${formatSpanishDate(startDate)}</span>`;
     container.classList.add('visible');
     const wrapper = document.querySelector('.countdown-wrapper');
     if (wrapper) wrapper.classList.add('visible');
@@ -268,35 +267,76 @@ function showCountdown() {
 
 // --- Música de fondo ---
 function playBackgroundMusic() {
-  // Asegurarse de que solo exista un reproductor para evitar audios duplicados
-  const audios = Array.from(document.querySelectorAll('audio'));
-  // Mantener la primera ocurrencia de bg-music o la primera audio en la página
-  let audio = document.getElementById('bg-music') || audios[0];
+  const audio = document.getElementById('bg-music');
   if (!audio) return;
-  // Eliminar otros <audio> con la misma fuente para evitar reproducir doble
-  audios.forEach(a => {
-    if (a === audio) return;
-    // Si el src termina en el mismo archivo o tienen el id 'bg-music' duplicado, remover
-    try {
-      const srcA = a.getAttribute('src') || '';
-      const srcMain = audio.getAttribute('src') || '';
-      if (srcA.endsWith('musicdays.mp3') || srcMain.endsWith('musicdays.mp3') || a.id === 'bg-music') {
-        a.parentNode && a.parentNode.removeChild(a);
-      }
-    } catch (e) {}
-  });
-  // Forzar uso del archivo musicdays y autoplay sin botones
-  // Si el elemento ya tiene el src correcto no lo reasignamos para evitar recargas innecesarias
-  if (!(audio.getAttribute('src') || '').endsWith('musicdays.mp3')) {
-    audio.src = 'musica/musicdays.mp3';
+
+  // --- Opción archivo local por parámetro 'musica' ---
+  let musicaParam = getURLParam('musica');
+  if (musicaParam) {
+    // Decodifica y previene rutas maliciosas
+    musicaParam = decodeURIComponent(musicaParam).replace(/[^\w\d .\-]/g, '');
+    audio.src = 'Music/' + musicaParam;
   }
-  audio.volume = 0.8;
+
+  // --- Opción YouTube (solo mensaje de ayuda) ---
+  let youtubeParam = getURLParam('youtube');
+  if (youtubeParam) {
+    // Muestra mensaje de ayuda para descargar el audio
+    let helpMsg = document.getElementById('yt-help-msg');
+    if (!helpMsg) {
+      helpMsg = document.createElement('div');
+      helpMsg.id = 'yt-help-msg';
+      helpMsg.style.position = 'fixed';
+      helpMsg.style.right = '18px';
+      helpMsg.style.bottom = '180px';
+      helpMsg.style.background = 'rgba(255,255,255,0.95)';
+      helpMsg.style.color = '#e60026';
+      helpMsg.style.padding = '10px 16px';
+      helpMsg.style.borderRadius = '12px';
+      helpMsg.style.boxShadow = '0 2px 8px #e6002633';
+      helpMsg.style.fontSize = '1.05em';
+      helpMsg.style.zIndex = 100;
+      helpMsg.innerHTML = 'Para usar música de YouTube, descarga el audio (por ejemplo, usando y2mate, 4K Video Downloader, etc.), colócalo en la carpeta <b>Music</b> y usa la URL así:<br><br><code>?musica=nombre.mp3</code>';
+      document.body.appendChild(helpMsg);
+      setTimeout(() => { if(helpMsg) helpMsg.remove(); }, 15000);
+    }
+  }
+
+  let btn = document.getElementById('music-btn');
+  if (!btn) {
+    btn = document.createElement('button');
+    btn.id = 'music-btn';
+    btn.textContent = '🔊 Música';
+    btn.style.position = 'fixed';
+    btn.style.bottom = '18px';
+    btn.style.right = '18px';
+    btn.style.zIndex = 99;
+    btn.style.background = 'rgba(255,255,255,0.85)';
+    btn.style.border = 'none';
+    btn.style.borderRadius = '24px';
+    btn.style.padding = '10px 18px';
+    btn.style.fontSize = '1.1em';
+    btn.style.cursor = 'pointer';
+    document.body.appendChild(btn);
+  }
+  audio.volume = 0.7;
   audio.loop = true;
-  audio.autoplay = true;
-  // Intento de reproducción inmediata; si el navegador bloquea autoplay, no mostramos botones
-  audio.play().catch(() => {
-    // Silencioso: el navegador puede requerir interacción, dejamos el audio listo para reproducir manualmente
+  // Intentar reproducir inmediatamente
+  audio.play().then(() => {
+    btn.textContent = '🔊 Música';
+  }).catch(() => {
+    // Si falla el autoplay, esperar click en el botón
+    btn.textContent = '▶️ Música';
   });
+  btn.onclick = () => {
+    if (audio.paused) {
+      audio.play();
+      btn.textContent = '🔊 Música';
+    } else {
+      audio.pause();
+      btn.textContent = '🔈 Música';
+    }
+  };
 }
 
 // Intentar reproducir la música lo antes posible (al cargar la página)
