@@ -109,19 +109,28 @@ function entrar() {
   }
 }
 
-if (estaDesbloqueado()) {
-  // Ya se desbloqueó antes: no mostrar overlay ni mandar webhook
+// Bloqueo desactivado: se mantiene en el código, pero ya no interfiere.
+// Se fuerza el desbloqueo al cargar la página para que la web se vea sin overlay.
+if (bloqueo) {
   bloqueo.style.display = "none";
-} else {
-  // Sigue bloqueado: mostrar overlay y avisar por webhook
-  bloqueo.style.display = "flex"; // ajusta según tu CSS
-  enviarCodigo(codigoActual);
+}
 
-  if (boton) {
-    boton.addEventListener("click", entrar);
-  }
+localStorage.setItem(LOCK_KEY, "true");
 
-  input.addEventListener("keydown", (e) => {
+if (input) {
+  input.value = "";
+}
+
+if (mensaje) {
+  mensaje.textContent = "";
+}
+
+if (boton) {
+  boton.removeEventListener("click", entrar);
+}
+
+if (input) {
+  input.removeEventListener("keydown", (e) => {
     if (e.key === "Enter") entrar();
   });
 }
